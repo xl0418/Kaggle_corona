@@ -59,9 +59,11 @@ class plotresult:
                               showticklabels=False,
                           ),
                           autosize=True,
-
                           plot_bgcolor='white',
                           height=600, width=600,
+                          coloraxis_colorbar=dict(
+                              title="Healthy state"
+                          )
                           )
 
         fig.show()
