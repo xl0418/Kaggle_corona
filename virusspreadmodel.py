@@ -16,6 +16,7 @@ class CoronaSim:
             low=0, high=grid_size, size=initial_virus)
         self.inistate_matrix = np.zeros(shape=[grid_size, grid_size])
         self.inistate_matrix.fill(float(recover_time))
+        self.recover_time = recover_time
         self.inistate_matrix[ini_x_virus, ini_y_virus] = 7
         self.speedreaction = speedreaction
         self.incubation = incubation
@@ -173,13 +174,13 @@ class CoronaSim:
             np.array(self.all_sites) - np.array([x_row, y_col]), axis=1)
         Act = self.activity(state)
         gm_virulence = self.gm_virulence(
-            infected_num=len(np.where(state < 30)[0]))
+            infected_num=len(np.where(state < self.recover_time)[0]))
         prob_spread = np.exp(-gm_virulence *
                              distance_sites ** 2) * Act[x_row, y_col] * Act.flatten()
         prob_spread[x_row*self.sim_grid.shape[1]+y_col] = 0
         focal_state = np.random.choice(range(
             self.sim_grid.shape[0]*self.sim_grid.shape[1]), size=self.samplesize, p=prob_spread/sum(prob_spread))
-        focal_state_value = 0 if min(state.flatten()[focal_state]) < 30 else 30
+        focal_state_value = 0 if min(state.flatten()[focal_state]) < self.recover_time else self.recover_time
         return focal_state_value
 
     def simspread(self, t_end, savefile):
@@ -188,11 +189,11 @@ class CoronaSim:
         output_list = []
         parallel_cores = Pool(self.num_cores)
         for t in range(t_end):
-            num_infected = len(np.where(state_matrix < 30)[0])
+            num_infected = len(np.where(state_matrix < self.recover_time)[0])
             print(
                 f'At Day {t}, {num_infected} infected cases are confirmed...')
-            healthy_individual_index_row = np.where(state_matrix >= 30)[0]
-            healthy_individual_index_col = np.where(state_matrix >= 30)[1]
+            healthy_individual_index_row = np.where(state_matrix >= self.recover_time)[0]
+            healthy_individual_index_col = np.where(state_matrix >= self.recover_time)[1]
             change_state = parallel_cores.starmap(self.spread_prob,
                                                   zip(healthy_individual_index_row, healthy_individual_index_col, itertools.repeat(state_matrix)))
             state_matrix[healthy_individual_index_row,
@@ -206,7 +207,7 @@ class CoronaSim:
 if __name__ == "__main__":
     test = CoronaSim(grid_size=100, initial_virus=5, contactsize=2, num_cores=6,
                      recover_time=30, speedreaction=0.01, incubation=7, virulence=25)
-    test.mechanismcheck()
+    # test.mechanismcheck()
     # %%
     result = test.simspread(t_end=60, savefile='outfile_sl3.npz')
 
