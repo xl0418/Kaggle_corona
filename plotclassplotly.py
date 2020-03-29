@@ -44,14 +44,34 @@ class plotresult:
         heatmapdf = pd.DataFrame(
             {'dis': infect_dis, 'Day': days, 'col': col, 'row': row})
         fig = px.scatter(heatmapdf, x="col", y="row", color='dis', animation_frame="Day",
-                         color_discrete_sequence=[(0, "blue"), (0.2, "red"), (1, "blue")])
+                         color_continuous_scale=[(0, "#91B493"), (0.2, "#D0104C"), (1, "#91B493")])
+        fig.update_layout(title='The pandemic development',
+                          xaxis_title='',
+                          yaxis_title='',
+                          xaxis=dict(
+                              showline=False,
+                              showgrid=False,
+                              showticklabels=False,
+                          ),
+                          yaxis=dict(
+                              showline=False,
+                              showgrid=False,
+                              showticklabels=False,
+                          ),
+                          autosize=True,
+
+                          plot_bgcolor='white',
+                          height=600, width=600,
+                          )
+
         fig.show()
+
 
         # %%
 if __name__ == "__main__":
     result = 'outfile_s3.npz'
     testplot = plotresult(result)
-    testplot.infectiongrowth()
-    # testplot.infectionheatmap()
+    # testplot.infectiongrowth()
+    testplot.infectionheatmap()
 
 # %%

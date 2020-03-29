@@ -30,16 +30,24 @@ class CoronaSim:
         valuedf = pd.DataFrame(
             {'state': state_value, 'Activity': self.activity(state_value)})
         f1 = px.scatter(valuedf, x="state", y="Activity")
+        f1.data[0].update(mode='markers+lines')
+        f1.update_traces(line_color='#B54434',
+                         marker_line_width=3, marker_size=4)
 
         distance = np.arange(200)
         disp = np.exp(-self.gm_virulence(20)*distance**2)
         contactdf = pd.DataFrame({'distance': distance, 'disp': disp})
-        f2 = px.scatter(contactdf, x="distance", y="disp")
+        f2 = px.line(contactdf, x="distance", y="disp")
+        f2.data[0].update(mode='markers+lines')
+        f2.update_traces(line_color='#1B813E',
+                         marker_line_width=3, marker_size=4)
 
         infected_num = np.arange(10000)
         measuredf = pd.DataFrame(
             {'infected_num': infected_num, 'measure': self.gm_virulence(infected_num)})
-        f3 = px.scatter(measuredf, x="infected_num", y="measure")
+        f3 = px.line(measuredf, x="infected_num", y="measure")
+        f3.update_traces(line_color='#66327C',
+                         marker_line_width=3, marker_size=4)
 
         trace1 = f1['data'][0]
         trace2 = f2['data'][0]
@@ -64,7 +72,91 @@ class CoronaSim:
         fig.update_yaxes(
             title_text="Intensity of the restriction", row=3, col=1)
 
-        fig['layout'].update(height=800, width=800, showlegend=False)
+        # fig['layout'].update(height=800, width=800, showlegend=False)
+        fig.update_layout(
+            xaxis=dict(
+                showline=True,
+                showgrid=False,
+                showticklabels=True,
+                linecolor='rgb(204, 204, 204)',
+                linewidth=2,
+                ticks='outside',
+                tickfont=dict(
+                    family='Arial',
+                    size=12,
+                    color='rgb(82, 82, 82)',
+                ),
+            ),
+            yaxis=dict(
+                showline=True,
+                showgrid=False,
+                showticklabels=True,
+                linecolor='rgb(204, 204, 204)',
+                linewidth=2,
+                ticks='outside',
+                tickfont=dict(
+                          family='Arial',
+                          size=12,
+                          color='rgb(82, 82, 82)',
+                ),
+            ),
+            xaxis2=dict(
+                showline=True,
+                showgrid=False,
+                showticklabels=True,
+                linecolor='rgb(204, 204, 204)',
+                linewidth=2,
+                ticks='outside',
+                tickfont=dict(
+                    family='Arial',
+                    size=12,
+                    color='rgb(82, 82, 82)',
+                ),
+            ),
+            yaxis2=dict(
+                showline=True,
+                showgrid=False,
+                showticklabels=True,
+                linecolor='rgb(204, 204, 204)',
+                linewidth=2,
+                ticks='outside',
+                tickfont=dict(
+                          family='Arial',
+                          size=12,
+                          color='rgb(82, 82, 82)',
+                ),
+            ),
+            xaxis3=dict(
+                showline=True,
+                showgrid=False,
+                showticklabels=True,
+                linecolor='rgb(204, 204, 204)',
+                linewidth=2,
+                ticks='outside',
+                tickfont=dict(
+                    family='Arial',
+                    size=12,
+                    color='rgb(82, 82, 82)',
+                ),
+            ),
+            yaxis3=dict(
+                showline=True,
+                showgrid=False,
+                showticklabels=True,
+                linecolor='rgb(204, 204, 204)',
+                linewidth=2,
+                ticks='outside',
+                tickfont=dict(
+                          family='Arial',
+                          size=12,
+                          color='rgb(82, 82, 82)',
+                ),
+            ),
+            autosize=True,
+
+            plot_bgcolor='white',
+            height=800, width=800,
+        )
         fig.show()
 
     def activity(self, state):
@@ -109,7 +201,6 @@ class CoronaSim:
             output_list.append(state_matrix.tolist())
         np.savez(self.savefile, *output_list)
         return state_matrix
-
 
     # %%
 if __name__ == "__main__":
