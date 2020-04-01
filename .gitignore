@@ -3,3 +3,6 @@
 *.xml
 *.iml
 .idea/*.*
+.csv
+*.csv
+*.zip

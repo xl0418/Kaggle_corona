@@ -25,12 +25,12 @@ infected_growth_df = pd.DataFrame(
 
 fig = go.Figure()
 # Create and style traces
-fig.add_trace(go.Scatter(x=infected_growth_df[infected_growth_df['batch'] == 1].Day, y=infected_growth_df[infected_growth_df['batch'] == 1].num_infected, name='Speed 0.1',
+fig.add_trace(go.Scatter(x=infected_growth_df[infected_growth_df['batch'] == 1].Day, y=infected_growth_df[infected_growth_df['batch'] == 1].num_infected, name='Speed 0.01',
                          line=dict(color='firebrick', width=4)))
-fig.add_trace(go.Scatter(x=infected_growth_df[infected_growth_df['batch'] == 2].Day, y=infected_growth_df[infected_growth_df['batch'] == 2].num_infected, name='Speed 1',
+fig.add_trace(go.Scatter(x=infected_growth_df[infected_growth_df['batch'] == 2].Day, y=infected_growth_df[infected_growth_df['batch'] == 2].num_infected, name='Speed 0.1',
                          line=dict(color='royalblue', width=4,
                                    dash='dot')))
-fig.add_trace(go.Scatter(x=infected_growth_df[infected_growth_df['batch'] == 3].Day, y=infected_growth_df[infected_growth_df['batch'] == 3].num_infected, name='Speed 0.01',
+fig.add_trace(go.Scatter(x=infected_growth_df[infected_growth_df['batch'] == 3].Day, y=infected_growth_df[infected_growth_df['batch'] == 3].num_infected, name='Speed 1',
                          line=dict(color='green', width=4,
                                    dash='dash')  # dash options include 'dash', 'dot', and 'dashdot'
                          ))
